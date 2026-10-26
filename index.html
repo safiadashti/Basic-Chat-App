@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="theme-color" content="#087f6e" />
+  <title>ChatNova — Connect instantly</title>
+  <link rel="stylesheet" href="style.css" />
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+</head>
+<body>
+  <div class="app-shell">
+    <aside class="sidebar">
+      <header class="brand-row">
+        <div class="brand-mark">✦</div>
+        <div><h1>ChatNova</h1><p>Stay connected</p></div>
+        <button id="themeButton" class="icon-btn" title="Change theme" aria-label="Change theme">◐</button>
+      </header>
+
+      <div class="appearance-bar"><label for="themeSelect">Theme</label><select id="themeSelect" aria-label="Choose theme"><option value="light">Pearl</option><option value="dark">Midnight</option><option value="lavender">Lavender</option><option value="rose">Rose</option><option value="ocean">Ocean</option><option value="mint">Mint</option></select><label for="accentPicker" class="color-label">Color</label><input id="accentPicker" type="color" value="#7c5cff" aria-label="Choose accent color" title="Choose your own color"></div>
+      <section id="authPanel" class="auth-panel">
+        <div class="auth-heading"><h2>Welcome to ChatNova</h2><p>Sign in to chat with people in real time.</p></div>
+        <form id="authForm">
+          <label for="displayName">Display name <span>(for sign up)</span></label>
+          <input id="displayName" autocomplete="nickname" placeholder="Your name" maxlength="40" />
+          <label for="email">Email</label>
+          <input id="email" type="email" autocomplete="email" placeholder="you@example.com" required />
+          <label for="password">Password</label>
+          <input id="password" type="password" autocomplete="current-password" placeholder="At least 6 characters" minlength="6" required />
+          <div class="auth-actions"><button class="primary-btn" type="submit" id="signInButton">Sign in</button><button class="secondary-btn" type="button" id="signUpButton">Create account</button></div>
+          <p id="authMessage" class="hint" role="status">Set up Firebase in app.js before signing in.</p>
+        </form>
+      </section>
+
+      <section id="mainPanel" class="main-panel hidden">
+        <div class="profile-strip">
+          <img id="myAvatar" class="avatar" alt="Your profile picture" src="https://api.dicebear.com/9.x/initials/svg?seed=Me" />
+          <div class="profile-text"><strong id="myName">My profile</strong><small id="myEmail"></small></div>
+          <button id="profilePhotoButton" class="tiny-btn" title="Change profile photo">✎</button>
+          <input id="profilePhotoInput" type="file" accept="image/*" hidden />
+          <button id="signOutButton" class="tiny-btn" title="Sign out">↪</button>
+        </div>
+        <div class="search-wrap"><span>⌕</span><input id="userSearch" placeholder="Search people by name/email" /></div>
+        <div class="tabs">
+          <button class="tab active" data-view="chats">Chats</button>
+          <button class="tab" data-view="community">Community</button>
+          <button class="tab" data-view="status">Status</button>
+        </div>
+        <div id="chatList" class="list-area">
+          <div class="empty-state"><span>✦</span><strong>Your chats start here</strong><p>Search for a signed-up user above.</p></div>
+        </div>
+        <div id="communityPanel" class="subpanel hidden">
+          <div class="section-title"><div><h3>Community room</h3><p>All signed-in members can join.</p></div><span class="live-dot"></span></div>
+          <button id="openCommunityButton" class="community-card"><span class="community-icon">🌐</span><span><strong>ChatNova Lounge</strong><small>Open community · live messages</small></span><span>›</span></button>
+          <p class="hint">Be kind. Do not share private information publicly.</p>
+        </div>
+        <div id="statusPanel" class="subpanel hidden">
+          <div class="section-title"><div><h3>Updates</h3><p>Photo or text status expires after 24 hours.</p></div></div>
+          <button id="addStatusButton" class="secondary-btn full">＋ Add status</button>
+          <input id="statusFileInput" type="file" accept="image/*,video/*" hidden />
+          <textarea id="statusText" rows="2" placeholder="Write a status (optional)"></textarea>
+          <div id="statusList" class="status-list"></div>
+        </div>
+      </section>
+      <footer class="sidebar-footer">Private chats are only visible to their participants when correctly configured in Firebase rules.</footer>
+    </aside>
+
+    <main class="chat-area">
+      <div id="welcomeView" class="welcome-view">
+        <div class="welcome-orbit"><div class="orbit-core">✦</div></div>
+        <h2>Messages that bring us closer.</h2>
+        <p>Choose a person, join the community, or share a status.</p>
+        <div class="feature-pills"><span>Real-time chat</span><span>Photo & voice</span><span>Theme switcher</span></div>
+      </div>
+      <section id="conversationView" class="conversation hidden">
+        <header class="conversation-header">
+          <div class="conversation-person"><img id="chatAvatar" class="avatar" alt="" /><div><strong id="chatTitle">Chat</strong><small id="chatSubtitle">Online conversation</small></div></div>
+          <div class="header-actions"><button id="voiceCallButton" class="icon-btn" title="Audio call">☎</button><button id="videoCallButton" class="icon-btn" title="Video call">▣</button><button id="chatThemeButton" class="icon-btn" title="Theme">◐</button></div>
+        </header>
+        <div id="messages" class="messages"></div>
+        <div id="typingHint" class="typing-hint"></div>
+        <div class="composer">
+          <label class="attach-btn" title="Send a picture or video">🖼<input id="mediaInput" type="file" accept="image/*,video/*" hidden /></label>
+          <textarea id="messageInput" rows="1" placeholder="Type a message…" maxlength="4000"></textarea>
+          <button id="voiceRecordButton" class="icon-btn" title="Record voice note">🎙</button>
+          <button id="sendButton" class="send-btn" title="Send message">➤</button>
+        </div>
+        <p class="composer-note">Voice recording needs microphone permission. Calls use WebRTC and may need TURN configuration on some networks.</p>
+      </section>
+    </main>
+  </div>
+  <div id="toast" class="toast" role="status"></div>
+  <div id="callModal" class="call-modal hidden">
+    <div class="call-card"><div class="call-symbol">☎</div><h2 id="callTitle">Call</h2><p id="callStatus">Call setup placeholder</p><video id="localVideo" autoplay muted playsinline></video><video id="remoteVideo" autoplay playsinline></video><div class="call-actions"><button id="endCallButton" class="danger-btn">End call</button></div></div>
+  </div>
+  <script type="module" src="app.js"></script>
+</body>
+</html>
